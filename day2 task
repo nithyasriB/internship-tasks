@@ -1,0 +1,225 @@
+import os
+import zipfile
+
+# Folder and file structure in memory
+project_name = "nextjs-routing-example"
+base_path = f"/mnt/data/{project_name}"
+
+# Create directories
+os.makedirs(f"{base_path}/pages/blog", exist_ok=True)
+os.makedirs(f"{base_path}/styles", exist_ok=True)
+
+# Files and their contents
+files = {
+    f"{base_path}/pages/index.js": """
+import Link from 'next/link';
+
+export default function Home() {
+  return (
+    <main>
+      <h1>Home Page</h1>
+      <p>Welcome to the Next.js routing example.</p>
+      <ul>
+        <li>
+          <Link href="/about">Go to About Page</Link>
+        </li>
+        <li>
+          <Link href="/blog/first-post">Read Blog: First Post</Link>
+        </li>
+        <li>
+          <Link href="/blog/nextjs-routing">Read Blog: Next.js Routing</Link>
+        </li>
+      </ul>
+    </main>
+  );
+}
+""",
+    f"{base_path}/pages/about.js": """
+import Link from 'next/link';
+
+export default function About() {
+  return (
+    <main>
+      <h1>About Page</h1>
+      <p>This page is statically routed using file-based routing.</p>
+      <Link href="/">← Back to Home</Link>
+    </main>
+  );
+}
+""",
+    f"{base_path}/pages/blog/[slug].js": """
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+
+export default function BlogPost() {
+  const router = useRouter();
+  const { slug } = router.query;
+
+  return (
+    <main>
+      <h1>Blog Post: {slug}</h1>
+      <p>This blog post is generated dynamically based on the URL.</p>
+      <Link href="/">← Back to Home</Link>
+    </main>
+  );
+}
+""",
+    f"{base_path}/styles/globals.css": """
+body {
+  font-family: sans-serif;
+  background: #f9f9f9;
+  padding: 2rem;
+  margin: 0;
+  color: #222;
+}
+
+a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+""",
+    f"{base_path}/next.config.js": """
+/** @type {import('next').NextConfig} */
+const nextConfig = {};
+
+module.exports = nextConfig;
+""",
+    f"{base_path}/package.json": """
+{
+  "name": "my-next-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
+""",
+    f"{base_path}/README.md": """
+# Next.js Routing Example
+
+This is a simple Next.js project demonstrating:
+
+- Multiple static pages (`index.js`, `about.js`)
+- Dynamic routing using `[slug].js` inside `pages/blog/`
+- Client-side navigation with Next.js `<Link>` component
+
+---
+
+## Project Structure & Source Code
+
+### `pages/index.js`
+
+```jsx
+import Link from 'next/link';
+
+export default function Home() {
+  return (
+    <main>
+      <h1>Home Page</h1>
+      <p>Welcome to the Next.js routing example.</p>
+      <ul>
+        <li>
+          <Link href="/about">Go to About Page</Link>
+        </li>
+        <li>
+          <Link href="/blog/first-post">Read Blog: First Post</Link>
+        </li>
+        <li>
+          <Link href="/blog/nextjs-routing">Read Blog: Next.js Routing</Link>
+        </li>
+      </ul>
+    </main>
+  );
+}
+  import Link from 'next/link';
+
+export default function About() {
+  return (
+    <main>
+      <h1>About Page</h1>
+      <p>This page is statically routed using file-based routing.</p>
+      <Link href="/">← Back to Home</Link>
+    </main>
+  );
+}
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+
+export default function BlogPost() {
+  const router = useRouter();
+  const { slug } = router.query;
+
+  return (
+    <main>
+      <h1>Blog Post: {slug}</h1>
+      <p>This blog post is generated dynamically based on the URL.</p>
+      <Link href="/">← Back to Home</Link>
+    </main>
+  );
+}
+  body {
+  font-family: sans-serif;
+  background: #f9f9f9;
+  padding: 2rem;
+  margin: 0;
+  color: #222;
+}
+
+a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+  /** @type {import('next').NextConfig} */
+const nextConfig = {};
+
+module.exports = nextConfig;
+{
+  "name": "my-next-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
