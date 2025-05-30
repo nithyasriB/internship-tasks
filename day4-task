@@ -1,0 +1,104 @@
+// File: package.json
+{
+  "name": "nextjs-tailwind-styled-components-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "styled-components": "^6.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "babel-plugin-styled-components": "^2.0.7",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.0.0"
+  }
+}
+
+// File: .babelrc
+{
+  "presets": ["next/babel"],
+  "plugins": [["styled-components", { "ssr": true }]]
+}
+
+// File: postcss.config.js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+
+// File: tailwind.config.js
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}"
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+// File: styles/globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// File: pages/_app.js
+import '../styles/globals.css';
+
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />;
+}
+
+// File: pages/index.js
+import Head from 'next/head';
+import ButtonDemo from '../components/Button';
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-gray-100 p-10">
+      <Head>
+        <title>Tailwind + Styled Components</title>
+      </Head>
+      <h1 className="text-2xl font-bold mb-6">Next.js + Tailwind + Styled Components Demo</h1>
+      <ButtonDemo />
+    </div>
+  );
+}
+
+// File: components/Button.js
+import styled from 'styled-components';
+
+const StyledButton = styled.button`
+  background-color: #6366f1;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  &:hover {
+    background-color: #4f46e5;
+  }
+`;
+
+const TailwindButton = () => (
+  <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+    Tailwind Button
+  </button>
+);
+
+export default function ButtonDemo() {
+  return (
+    <div className="space-y-4">
+      <StyledButton>Styled Button</StyledButton>
+      <TailwindButton />
+    </div>
+  );
+}
