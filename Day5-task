@@ -1,0 +1,115 @@
+// File: package.json
+{
+  "name": "nextjs-tailwind-portfolio",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.0.0"
+  }
+}
+
+// File: tailwind.config.js
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}"
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+// File: postcss.config.js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+
+// File: styles/globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// File: pages/_app.js
+import '../styles/globals.css';
+
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />;
+}
+
+// File: components/Header.js
+export default function Header() {
+  return (
+    <header className="bg-white shadow">
+      <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 className="text-xl font-bold">My Portfolio</h1>
+        <nav className="space-x-4">
+          <a href="#about" className="text-gray-700 hover:text-indigo-600">About</a>
+          <a href="#projects" className="text-gray-700 hover:text-indigo-600">Projects</a>
+          <a href="#contact" className="text-gray-700 hover:text-indigo-600">Contact</a>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+// File: components/Section.js
+export default function Section({ id, title, children }) {
+  return (
+    <section id={id} className="py-20 px-4 max-w-4xl mx-auto">
+      <h2 className="text-3xl font-bold mb-6 text-center">{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+// File: pages/index.js
+import Header from '../components/Header';
+import Section from '../components/Section';
+
+export default function Home() {
+  return (
+    <div>
+      <Header />
+
+      <main className="bg-gray-50">
+        <Section id="about" title="About Me">
+          <p className="text-lg text-gray-700 text-center">
+            Hello! I'm a frontend developer passionate about building responsive and engaging user interfaces.
+          </p>
+        </Section>
+
+        <Section id="projects" title="Projects">
+          <ul className="space-y-4">
+            <li className="bg-white p-4 rounded shadow">
+              <h3 className="text-xl font-semibold">Portfolio Website</h3>
+              <p>A responsive personal portfolio built with Next.js and Tailwind CSS.</p>
+            </li>
+            <li className="bg-white p-4 rounded shadow">
+              <h3 className="text-xl font-semibold">Image Search Engine</h3>
+              <p>Deep learning-powered image similarity search using FAISS and Streamlit.</p>
+            </li>
+          </ul>
+        </Section>
+
+        <Section id="contact" title="Contact">
+          <p className="text-center text-gray-600">Feel free to reach out via email at <a href="mailto:you@example.com" className="text-indigo-600 underline">you@example.com</a></p>
+        </Section>
+      </main>
+    </div>
+  );
+}
