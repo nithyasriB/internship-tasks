@@ -1,0 +1,152 @@
+// package.json
+{
+  "name": "nextjs-company-info-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.0.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0"
+  }
+}
+
+// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./pages/**/*.{js,jsx}",
+    "./components/**/*.{js,jsx}"
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+// postcss.config.js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+
+// styles/globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// pages/_app.js
+import '../styles/globals.css';
+
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />;
+}
+
+// components/Navbar.js
+import Link from 'next/link';
+
+export default function Navbar() {
+  return (
+    <nav className="bg-blue-600 text-white p-4">
+      <div className="flex space-x-8 justify-center">
+        <Link href="/">
+          <a className="hover:underline">Home</a>
+        </Link>
+        <Link href="/about">
+          <a className="hover:underline">About</a>
+        </Link>
+        <Link href="/services">
+          <a className="hover:underline">Services</a>
+        </Link>
+        <Link href="/contact">
+          <a className="hover:underline">Contact</a>
+        </Link>
+      </div>
+    </nav>
+  );
+}
+
+// pages/index.js
+import Navbar from '../components/Navbar';
+
+export default function Home() {
+  return (
+    <div>
+      <Navbar />
+      <main className="p-10 text-center">
+        <h1 className="text-4xl font-bold mb-4">Welcome to Our Company</h1>
+        <p className="text-lg max-w-xl mx-auto">
+          We provide top-notch services to help your business grow. Explore our website to learn more about us and what we offer.
+        </p>
+      </main>
+    </div>
+  );
+}
+
+// pages/about.js
+import Navbar from '../components/Navbar';
+
+export default function About() {
+  return (
+    <div>
+      <Navbar />
+      <main className="p-10 max-w-3xl mx-auto">
+        <h1 className="text-3xl font-semibold mb-4">About Us</h1>
+        <p className="mb-2">
+          We are a team of dedicated professionals committed to delivering high-quality solutions tailored to your needs.
+        </p>
+        <p>
+          Our mission is to empower businesses through innovative technology and exceptional service.
+        </p>
+      </main>
+    </div>
+  );
+}
+
+// pages/services.js
+import Navbar from '../components/Navbar';
+
+export default function Services() {
+  return (
+    <div>
+      <Navbar />
+      <main className="p-10 max-w-3xl mx-auto">
+        <h1 className="text-3xl font-semibold mb-4">Our Services</h1>
+        <ul className="list-disc list-inside space-y-2">
+          <li>Custom Software Development</li>
+          <li>Web & Mobile App Development</li>
+          <li>Cloud Solutions & Infrastructure</li>
+          <li>IT Consulting and Strategy</li>
+          <li>Maintenance and Support</li>
+        </ul>
+      </main>
+    </div>
+  );
+}
+
+// pages/contact.js
+import Navbar from '../components/Navbar';
+
+export default function Contact() {
+  return (
+    <div>
+      <Navbar />
+      <main className="p-10 max-w-3xl mx-auto text-center">
+        <h1 className="text-3xl font-semibold mb-4">Contact Us</h1>
+        <p className="mb-2">Email: info@company.com</p>
+        <p className="mb-2">Phone: +1 (123) 456-7890</p>
+        <p>Address: 123 Business Rd, Suite 100, City, Country</p>
+      </main>
+    </div>
+  );
+}
