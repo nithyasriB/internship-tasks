@@ -1,0 +1,149 @@
+// File: components/Header.js
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+export default function Header() {
+  const router = useRouter();
+
+  const navItems = [
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Services', path: '/services' },
+    { name: 'Contact', path: '/contact' },
+  ];
+
+  return (
+    <header className="bg-blue-600 text-white p-4">
+      <nav className="container mx-auto flex space-x-6">
+        {navItems.map(({ name, path }) => (
+          <Link key={path} href={path} passHref>
+            <a
+              className={`hover:underline ${
+                router.pathname === path ? 'font-bold underline' : 'font-normal'
+              }`}
+            >
+              {name}
+            </a>
+          </Link>
+        ))}
+      </nav>
+    </header>
+  );
+}
+
+// File: components/Footer.js
+export default function Footer() {
+  return (
+    <footer className="bg-gray-800 text-gray-300 p-4 mt-auto">
+      <div className="container mx-auto text-center">
+        &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+      </div>
+    </footer>
+  );
+}
+
+// File: components/Layout.js
+import Header from './Header';
+import Footer from './Footer';
+
+export default function Layout({ children }) {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-grow container mx-auto p-6">{children}</main>
+      <Footer />
+    </div>
+  );
+}
+
+// File: pages/_app.js
+import '../styles/globals.css';
+
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />;
+}
+
+// File: pages/index.js
+import Layout from '../components/Layout';
+
+export default function Home() {
+  return (
+    <Layout>
+      <h1 className="text-3xl font-bold mb-4">Welcome to Our Company</h1>
+      <p>This is the homepage of your company website.</p>
+    </Layout>
+  );
+}
+
+// File: pages/about.js
+import Layout from '../components/Layout';
+
+export default function About() {
+  return (
+    <Layout>
+      <h1 className="text-2xl font-semibold mb-2">About Us</h1>
+      <p>We are committed to delivering excellent services to our clients.</p>
+    </Layout>
+  );
+}
+
+// File: pages/services.js
+import Layout from '../components/Layout';
+
+export default function Services() {
+  return (
+    <Layout>
+      <h1 className="text-2xl font-semibold mb-2">Our Services</h1>
+      <p>We offer a range of services tailored to your business needs.</p>
+    </Layout>
+  );
+}
+
+// File: pages/contact.js
+import Layout from '../components/Layout';
+
+export default function Contact() {
+  return (
+    <Layout>
+      <h1 className="text-2xl font-semibold mb-2">Contact Us</h1>
+      <p>Email: contact@yourcompany.com</p>
+      <p>Phone: +123-456-7890</p>
+    </Layout>
+  );
+}
+
+// File: styles/globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// tailwind.config.js
+module.exports = {
+  content: ['./pages/**/*.{js,jsx}', './components/**/*.{js,jsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+// postcss.config.js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+
+// package.json (dependencies only snippet)
+{
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.0.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0"
+  }
+}
