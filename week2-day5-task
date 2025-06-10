@@ -1,0 +1,61 @@
+import Head from 'next/head'
+import Image from 'next/image'
+import myImage from '../public/sample.jpg' // Place any image in public folder
+
+export default function Home() {
+  return (
+    <>
+      <Head>
+        <title>Next.js SEO + Image Optimization</title>
+        <meta name="description" content="Demo project with SEO, responsive design and optimized images" />
+        <meta property="og:title" content="Next.js SEO Demo" />
+        <meta property="og:description" content="Optimized with next/head and next/image" />
+        <meta property="og:type" content="website" />
+      </Head>
+
+      <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-100">
+        <h1 className="text-3xl font-bold mb-6 text-center">🚀 Optimized Next.js Website</h1>
+        <p className="mb-4 text-center text-gray-700">
+          This page demonstrates meta SEO, optimized images, and mobile-friendly UI.
+        </p>
+
+        <div className="rounded-xl overflow-hidden shadow-lg max-w-md w-full">
+          <Image
+            src={myImage}
+            alt="Optimized Sample"
+            layout="responsive"
+            width={600}
+            height={400}
+            priority
+          />
+        </div>
+
+        <a
+          href="https://vercel.com" // Replace with your deployed URL
+          target="_blank"
+          className="mt-6 inline-block bg-black text-white px-4 py-2 rounded-lg"
+        >
+          🔗 View Live on Vercel
+        </a>
+      </main>
+    </>
+  )
+}
+import '../styles/globals.css'
+
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />
+}
+module.exports = {
+  content: ['./pages/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
