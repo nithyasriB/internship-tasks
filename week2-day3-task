@@ -1,0 +1,150 @@
+my-next-app/
+├── components/
+│   ├── BlogCard.js
+│   └── ServiceCard.js
+├── pages/
+│   ├── blog.js
+│   ├── services.js
+│   └── index.js
+├── public/
+├── styles/
+│   └── globals.css
+├── tailwind.config.js
+├── postcss.config.js
+├── package.json
+└── next.config.js
+
+components/BlogCard.js
+export default function BlogCard({ title, body }) {
+  return (
+    <div className="p-4 bg-white border rounded-lg shadow hover:shadow-md transition">
+      <h2 className="text-xl font-bold mb-2">{title}</h2>
+      <p className="text-gray-600">{body}</p>
+    </div>
+  );
+}
+
+components/ServiceCard.js
+import Head from 'next/head';
+import Card from '../components/ServiceCard';
+import Link from 'next/link';
+
+export default function Services({ services }) {
+  return (
+    <div className="min-h-screen bg-gray-100 p-8">
+      <Head>
+        <title>Our Services</title>
+        <meta name="description" content="List of services fetched from JSONPlaceholder (todos)" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <header className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold text-gray-800">Our Services</h1>
+        <Link href="/" legacyBehavior>
+          <a className="text-blue-500 hover:text-blue-700 font-medium">Back to Home</a>
+        </Link>
+      </header>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map((service) => (
+          <Card
+            key={service.id}
+            title={`Service ID: ${service.id}`}
+            body={service.title + (service.completed ? ' (Completed)' : ' (Pending)')}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export async function getStaticProps() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=15'); // Limit to 15 services for brevity
+  const services = await res.json();
+
+  return {
+    props: {
+      services,
+    },
+    revalidate: 3600, // Regenerate the page every hour
+  };
+}
+
+pages/blog.js
+// pages/blog.js
+import BlogCard from "@/components/BlogCard";
+
+export async function getStaticProps() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=12");
+  const posts = await res.json();
+
+  return {
+    props: { posts },
+  };
+}
+
+export default function Blog({ posts }) {
+  return (
+    <main className="max-w-6xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <BlogCard key={post.id} title={post.title} body={post.body} />
+        ))}
+      </div>
+    </main>
+  );
+}
+
+pages/services.js
+// pages/services.js
+import ServiceCard from "@/components/ServiceCard";
+
+export async function getStaticProps() {
+  const res = await fetch("https://restcountries.com/v3.1/all");
+  const countries = await res.json();
+
+  const services = countries.slice(0, 12).map((country) => ({
+    name: country.name.common,
+    capital: country.capital?.[0] || "N/A",
+    flag: country.flags.svg,
+  }));
+
+  return {
+    props: { services },
+  };
+}
+
+export default function Services({ services }) {
+  return (
+    <main className="max-w-6xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Services</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map((service, index) => (
+          <ServiceCard
+            key={index}
+            name={service.name}
+            capital={service.capital}
+            flag={service.flag}
+          />
+        ))}
+      </div>
+    </main>
+  );
+}
+
+pages/index.js
+// pages/index.js
+import Link from "next/link";
+
+export default function Home() {
+  return (
+    <main className="flex flex-col items-center justify-center h-screen text-center space-y-6">
+      <h1 className="text-4xl font-bold">Welcome to the API Demo</h1>
+      <div className="space-x-4">
+        <Link href="/blog" className="text-blue-600 underline">View Blogs</Link>
+        <Link href="/services" className="text-blue-600 underline">View Services</Link>
+      </div>
+    </main>
+  );
+}
