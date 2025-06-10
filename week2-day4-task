@@ -1,0 +1,68 @@
+/data/blogData.js
+
+// /data/blogData.js
+const blogPosts = [
+  {
+    slug: 'my-first-post',
+    title: 'My First Blog Post',
+    date: '2025-06-01',
+    content: 'This is the full content of my first blog post.',
+  },
+  {
+    slug: 'nextjs-dynamic-routing',
+    title: 'Understanding Dynamic Routing in Next.js',
+    date: '2025-06-02',
+    content: 'Here’s how dynamic routing works in Next.js using the App Router.',
+  },
+];
+
+export default blogPosts;
+
+/app/blog/page.tsx
+
+// /app/blog/page.tsx
+'use client';
+import Link from 'next/link';
+import blogPosts from '@/data/blogData';
+
+export default function BlogPage() {
+  return (
+    <div className="p-6">
+      <h1 className="text-4xl font-bold mb-6">Blog</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {blogPosts.map((post) => (
+          <Link key={post.slug} href={`/blog/${post.slug}`}>
+            <div className="border rounded-2xl p-5 hover:shadow-lg transition">
+              <h2 className="text-2xl font-semibold">{post.title}</h2>
+              <p className="text-gray-500 text-sm mt-1">{post.date}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/app/blog/[slug]/page.tsx
+
+// /app/blog/[slug]/page.tsx
+import blogPosts from '@/data/blogData';
+import { notFound } from 'next/navigation';
+
+interface Props {
+  params: { slug: string };
+}
+
+export default function BlogDetail({ params }: Props) {
+  const post = blogPosts.find((p) => p.slug === params.slug);
+
+  if (!post) return notFound();
+
+  return (
+    <div className="p-6 max-w-3xl mx-auto">
+      <h1 className="text-4xl font-bold mb-2">{post.title}</h1>
+      <p className="text-gray-500 text-sm mb-4">{post.date}</p>
+      <div className="text-lg leading-relaxed">{post.content}</div>
+    </div>
+  );
+}
