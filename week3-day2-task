@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "title": "Custom Web Design",
+    "description": "Professional and responsive web design services."
+  },
+  {
+    "id": 2,
+    "title": "SEO Optimization",
+    "description": "Boost your site ranking with our SEO strategies."
+  },
+  {
+    "id": 3,
+    "title": "Digital Marketing",
+    "description": "End-to-end marketing solutions for your business."
+  }
+]
+import path from 'path';
+import fs from 'fs';
+
+export async function getStaticProps() {
+  const filePath = path.join(process.cwd(), 'data', 'data.json');
+  const jsonData = fs.readFileSync(filePath, 'utf-8');
+  const services = JSON.parse(jsonData);
+
+  return {
+    props: { services },
+  };
+}
+
+export default function Services({ services }) {
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6">🛠️ Services (From JSON)</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {services.map(service => (
+          <div key={service.id} className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
+            <h2 className="text-xl font-semibold mb-2">{service.title}</h2>
+            <p className="text-gray-600">{service.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+// tailwind.config.js
+module.exports = {
+  content: ['./pages/**/*.{js,ts,jsx,tsx}'],
+  theme: { extend: {} },
+  plugins: [],
+};
