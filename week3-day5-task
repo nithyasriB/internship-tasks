@@ -1,0 +1,52 @@
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+
+export default function Custom404() {
+  return (
+    <main className="h-screen flex flex-col justify-center items-center bg-gray-50 text-center p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-md"
+      >
+        <h1 className="text-6xl font-bold text-blue-600 mb-4">404</h1>
+        <p className="text-xl text-gray-700 mb-6">Oops! The page you're looking for doesn't exist.</p>
+        <Link href="/">
+          <a className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+            Go Back Home
+          </a>
+        </Link>
+      </motion.div>
+    </main>
+  );
+}
+# Next.js Services Showcase
+
+A responsive services listing web app built with Next.js, Tailwind CSS, and Framer Motion.
+
+## 🚀 Features
+
+- Static data from JSON and APIs
+- Search and filter functionality
+- Page animations and loading states
+- Custom 404 page
+- Mobile-friendly and accessible
+
+## 📦 Tech Stack
+
+- Next.js
+- Tailwind CSS
+- Framer Motion
+- JSON/REST API
+- Vercel Deployment
+
+## 🌐 Live Site
+
+[🔗 View Live on Vercel](https://your-vercel-url.vercel.app)
+
+## 📁 How to Run Locally
+
+```bash
+npm install
+npm run dev
