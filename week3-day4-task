@@ -1,0 +1,64 @@
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+
+const fakeFetchServices = () =>
+  new Promise((res) =>
+    setTimeout(() => {
+      res([
+        { id: 1, title: 'UI Design', description: 'Beautiful interfaces' },
+        { id: 2, title: 'Backend Dev', description: 'Scalable APIs' },
+        { id: 3, title: 'Mobile App', description: 'iOS and Android' }
+      ]);
+    }, 1500)
+  );
+
+export default function Services() {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fakeFetchServices().then((data) => {
+      setServices(data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" role="status" />
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      className="p-6"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <h1 className="text-3xl font-bold mb-6">✨ Animated Services</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {services.map((service) => (
+          <motion.div
+            key={service.id}
+            className="bg-white p-4 rounded-xl shadow"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <h2 className="text-xl font-semibold">{service.title}</h2>
+            <p className="text-gray-600">{service.description}</p>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+export default function Spinner() {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" role="status" />
+    </div>
+  );
+}
