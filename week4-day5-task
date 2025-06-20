@@ -1,0 +1,148 @@
+NEXT_PUBLIC_API_URL=https://fakestoreapi.com
+NEXT_PUBLIC_SECRET_KEY=my-secret-value
+
+
+// 2. .gitignore
+// -----------------------------------------------------------------
+# Node modules
+node_modules/
+
+# Build output
+.next/
+out/
+
+# Logs
+*.log
+
+# Env files
+.env.local
+.env.*.local
+.env
+
+# Misc
+.DS_Store
+
+
+// 3. /pages/index.js
+// -----------------------------------------------------------------
+import Head from 'next/head';
+import Link from 'next/link';
+
+export default function Home() {
+  return (
+    <div className="min-h-screen p-6 bg-gray-100">
+      <Head>
+        <title>My Optimized App</title>
+        <meta name="description" content="A blazing fast Next.js app with API, Auth, and SEO" />
+      </Head>
+
+      <h1 className="text-4xl font-bold mb-4">Welcome to the App 🌟</h1>
+      <p className="mb-4">This is the homepage of our final deployed project.</p>
+
+      <div className="space-x-4">
+        <Link href="/products">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded">View Products</button>
+        </Link>
+        <Link href="/about">
+          <button className="bg-gray-700 text-white px-4 py-2 rounded">About</button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+
+// 4. /pages/products.js (API Integration Example)
+// -----------------------------------------------------------------
+import Image from 'next/image';
+
+export async function getServerSideProps() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
+  const products = await res.json();
+
+  return { props: { products } };
+}
+
+export default function Products({ products }) {
+  return (
+    <div className="p-6 bg-white min-h-screen">
+      <h1 className="text-2xl font-bold mb-6">🛍 Products</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="border rounded shadow p-4">
+            <div className="w-full h-48 relative">
+              <Image
+                src={product.image}
+                alt={product.title}
+                layout="fill"
+                objectFit="contain"
+              />
+            </div>
+            <h2 className="mt-4 text-lg font-semibold">{product.title}</h2>
+            <p className="text-gray-600">${product.price}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+// 5. /pages/about.js (Static Page with SEO)
+// -----------------------------------------------------------------
+import Head from 'next/head';
+
+export default function About() {
+  return (
+    <div className="p-6">
+      <Head>
+        <title>About | My Optimized App</title>
+        <meta name="description" content="About page with SEO and performance enhancements" />
+      </Head>
+      <h1 className="text-3xl font-bold mb-4">About This Project</h1>
+      <p>
+        This project demonstrates a fully optimized Next.js application with dynamic API data, image optimization,
+        and deployed to Vercel with environmental configurations.
+      </p>
+    </div>
+  );
+}
+
+
+// 6. README.md (Setup Instructions)
+// -----------------------------------------------------------------
+# 🚀 Final Next.js App
+
+A full-stack, SEO-friendly app with API integration, global state, optimized images, and Vercel deployment.
+
+## 📦 Tech Stack
+- Next.js
+- Tailwind CSS
+- next/image
+- Environment Variables
+- GitHub + Vercel
+
+## 🛠 Setup
+```bash
+git clone https://github.com/yourusername/next-final-demo
+cd next-final-demo
+npm install
+```
+
+Create `.env.local` with:
+```env
+NEXT_PUBLIC_API_URL=https://fakestoreapi.com
+NEXT_PUBLIC_SECRET_KEY=your-key-here
+```
+
+## 🚀 Run Dev
+```bash
+npm run dev
+```
+
+## 🌐 Deploy
+- Push to GitHub
+- Connect to Vercel
+- Add `.env` vars in Vercel dashboard
+
+---
