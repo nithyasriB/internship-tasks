@@ -1,0 +1,41 @@
+export async function getServerSideProps() {
+  try {
+    const res = await fetch('https://fakestoreapi.com/products');
+    const data = await res.json();
+    return {
+      props: { products: data },
+    };
+  } catch (error) {
+    console.error('API Error:', error);
+    return {
+      props: { products: [] },
+    };
+  }
+}
+
+export default function Products({ products }) {
+  return (
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6">🛍️ Product Showcase</h1>
+
+      {products.length === 0 ? (
+        <p className="text-red-600">Failed to load products. Try again later.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {products.map(product => (
+            <div key={product.id} className="bg-white rounded-xl shadow p-4 hover:shadow-md transition">
+              <img
+                src={product.image}
+                alt={product.title}
+                className="w-full h-48 object-contain mb-4"
+              />
+              <h2 className="text-lg font-semibold">{product.title}</h2>
+              <p className="text-gray-600 mt-1 truncate">{product.description}</p>
+              <p className="text-blue-600 font-bold mt-2">${product.price}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
