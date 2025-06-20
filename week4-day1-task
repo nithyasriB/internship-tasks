@@ -1,0 +1,85 @@
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // Mock credentials
+    if (formData.email === 'test@example.com' && formData.password === '1234') {
+      localStorage.setItem('auth', 'true');
+      router.push('/dashboard');
+    } else {
+      setError('Invalid email or password');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form onSubmit={handleLogin} className="bg-white p-6 rounded-md shadow w-full max-w-sm">
+        <h2 className="text-2xl font-bold mb-4">Login</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          className="w-full border p-2 rounded mb-3"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+          className="w-full border p-2 rounded mb-3"
+        />
+        {error && <p className="text-red-500 mb-2">{error}</p>}
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded">
+          Login
+        </button>
+      </form>
+    </div>
+  );
+}
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+
+export default function Dashboard() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('auth') === 'true';
+    if (!isLoggedIn) {
+      router.push('/login');
+    }
+  }, []);
+
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold">Welcome to the Dashboard</h1>
+      <button
+        onClick={() => {
+          localStorage.removeItem('auth');
+          router.push('/login');
+        }}
+        className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
+      >
+        Logout
+      </button>
+    </div>
+  );
+}
+// pages/api/auth/[...nextauth].js
+import NextAuth from "next-auth";
+import GithubProvider from "next-auth/providers/github";
+
+export default NextAuth({
+  providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
+  ],
+});
