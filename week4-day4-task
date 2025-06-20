@@ -1,0 +1,57 @@
+import Image from 'next/image';
+
+export default function HeroSection() {
+  return (
+    <div className="relative h-64 w-full">
+      <Image
+        src="/banner.jpg"
+        alt="Hero Banner"
+        layout="fill"
+        objectFit="cover"
+        priority
+      />
+    </div>
+  );
+}
+import dynamic from 'next/dynamic';
+
+const ChartComponent = dynamic(() => import('../components/Chart'), {
+  ssr: false,
+  loading: () => <p>Loading Chart...</p>,
+});
+
+export default function Dashboard() {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+      <ChartComponent />
+    </div>
+  );
+}
+import { memo, useCallback, useState } from 'react';
+
+const CountDisplay = memo(({ count, onIncrement }) => {
+  console.log('Rendering CountDisplay');
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={onIncrement} className="mt-2 bg-blue-500 px-4 py-2 text-white rounded">
+        Increment
+      </button>
+    </div>
+  );
+});
+
+export default function CounterPage() {
+  const [count, setCount] = useState(0);
+
+  const increment = useCallback(() => {
+    setCount((c) => c + 1);
+  }, []);
+
+  return (
+    <div className="p-6">
+      <CountDisplay count={count} onIncrement={increment} />
+    </div>
+  );
+}
