@@ -1,0 +1,92 @@
+import { createContext, useState, useContext } from 'react';
+
+const UserContext = createContext();
+
+export function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+
+  const login = (email) => setUser({ email });
+  const logout = () => setUser(null);
+
+  return (
+    <UserContext.Provider value={{ user, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
+
+export function useUser() {
+  return useContext(UserContext);
+}
+import { UserProvider } from '../context/UserContext';
+import '../styles/globals.css';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <UserProvider>
+      <Component {...pageProps} />
+    </UserProvider>
+  );
+}
+
+export default MyApp;
+import { useUser } from '../context/UserContext';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+export default function LoginPage() {
+  const { login } = useUser();
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    login(email);
+    router.push('/dashboard');
+  };
+
+  return (
+    <form onSubmit={handleLogin} className="p-6 max-w-sm mx-auto mt-10 bg-white shadow rounded">
+      <h2 className="text-xl font-bold mb-4">Login</h2>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter email"
+        className="w-full p-2 border mb-4 rounded"
+      />
+      <button className="bg-blue-600 text-white w-full py-2 rounded">Login</button>
+    </form>
+  );
+}
+import { useUser } from '../context/UserContext';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
+export default function Dashboard() {
+  const { user, logout } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+    }
+  }, [user]);
+
+  if (!user) return null;
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Welcome, {user.email}</h1>
+      <button
+        onClick={() => {
+          logout();
+          router.push('/');
+        }}
+        className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
+      >
+        Logout
+      </button>
+    </div>
+  );
+}
