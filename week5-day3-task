@@ -1,0 +1,92 @@
+import MainLayout from '../components/MainLayout';
+import Image from 'next/image';
+
+const products = [
+  {
+    title: 'Smartwatch',
+    description: 'Modern wearable with health tracking features.',
+    image: '/products/watch.jpg'
+  },
+  {
+    title: 'Wireless Headphones',
+    description: 'High-quality sound with noise cancellation.',
+    image: '/products/headphones.jpg'
+  },
+  {
+    title: 'Laptop Pro',
+    description: 'Powerful performance for creators and developers.',
+    image: '/products/laptop.jpg'
+  }
+];
+
+export default function Products() {
+  return (
+    <MainLayout>
+      <section className="text-center py-20 bg-gray-100">
+        <h1 className="text-4xl font-bold mb-6">Our Products</h1>
+        <p className="mb-8 text-lg">Browse our best-selling tech products.</p>
+      </section>
+
+      <section className="container mx-auto px-4 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {products.map((product, idx) => (
+            <div key={idx} className="border rounded shadow p-4 text-center">
+              <div className="relative w-full h-48 mb-4">
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
+              <h3 className="text-xl font-semibold">{product.title}</h3>
+              <p className="text-gray-600">{product.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </MainLayout>
+  );
+}
+
+// 2. Projects Page (pages/projects.js)
+// -----------------------------------------------------------------
+import MainLayout from '../components/MainLayout';
+
+const projects = [
+  {
+    title: 'E-Commerce Platform',
+    description: 'Built a full-stack store using Next.js and Stripe integration.'
+  },
+  {
+    title: 'Portfolio Website',
+    description: 'Designed and developed a personal portfolio for a client.'
+  },
+  {
+    title: 'Blog CMS',
+    description: 'Custom headless CMS with markdown and admin panel.'
+  }
+];
+
+export default function Projects() {
+  return (
+    <MainLayout>
+      <section className="text-center py-20 bg-blue-50">
+        <h1 className="text-4xl font-bold mb-6">Our Projects</h1>
+        <p className="mb-8 text-lg">Here are some highlights of our recent work.</p>
+      </section>
+
+      <section className="container mx-auto px-4 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {projects.map((project, idx) => (
+            <div key={idx} className="border rounded shadow p-4 hover:shadow-md transition">
+              <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+              <p className="text-gray-600">{project.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </MainLayout>
+  );
+}
+
