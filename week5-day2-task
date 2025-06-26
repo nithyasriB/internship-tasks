@@ -1,0 +1,80 @@
+import MainLayout from '../components/MainLayout';
+import Image from 'next/image';
+
+export default function About() {
+  return (
+    <MainLayout>
+      <section className="text-center py-20 bg-gray-100">
+        <h1 className="text-4xl font-bold mb-4">About Us</h1>
+        <p className="text-lg">Learn more about our mission, values, and team.</p>
+      </section>
+
+      <section className="py-10 container mx-auto px-4 flex flex-col md:flex-row items-center">
+        <div className="md:w-1/2 mb-6 md:mb-0">
+          <Image src="/team.jpg" alt="Our Team" width={500} height={350} className="rounded shadow" />
+        </div>
+        <div className="md:w-1/2 md:pl-10">
+          <h2 className="text-2xl font-semibold mb-4">Who We Are</h2>
+          <p className="text-gray-700">
+            We are a team of passionate developers and designers building web experiences that matter.
+            Our mission is to empower businesses through digital innovation.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-10 bg-blue-50">
+        <h3 className="text-2xl font-bold text-center mb-6">Our Values</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          <div className="p-4 border rounded shadow">Innovation</div>
+          <div className="p-4 border rounded shadow">Integrity</div>
+          <div className="p-4 border rounded shadow">Collaboration</div>
+        </div>
+      </section>
+    </MainLayout>
+  );
+}
+
+// 2. Reusable ServiceCard Component (components/ServiceCard.js)
+// -----------------------------------------------------------------
+export default function ServiceCard({ title, description }) {
+  return (
+    <div className="border rounded shadow p-4 text-center hover:shadow-lg transition">
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  );
+}
+
+// 3. Services Page (pages/services.js)
+// -----------------------------------------------------------------
+import MainLayout from '../components/MainLayout';
+import ServiceCard from '../components/ServiceCard';
+
+const services = [
+  { title: 'Web Development', description: 'Custom websites and web apps.' },
+  { title: 'SEO Optimization', description: 'Improve your search visibility.' },
+  { title: 'E-commerce Solutions', description: 'Launch your online store today.' },
+];
+
+export default function Services() {
+  return (
+    <MainLayout>
+      <section className="text-center py-20 bg-gray-100">
+        <h1 className="text-4xl font-bold mb-6">Our Services</h1>
+        <p className="mb-8 text-lg">We offer a wide range of digital services to meet your needs.</p>
+      </section>
+
+      <section className="py-10 container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {services.map((service, idx) => (
+            <ServiceCard
+              key={idx}
+              title={service.title}
+              description={service.description}
+            />
+          ))}
+        </div>
+      </section>
+    </MainLayout>
+  );
+}
